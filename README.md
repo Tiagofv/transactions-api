@@ -16,15 +16,18 @@ docker-compose up -d
 # Concepts
 ## Clean architecture
 This project relies heavily on the concepts presented by uncle in his book "Clean Architecture: a craftsmen guide to software structure and design".
-Clean arch allow us to decouple our apps from frameworks, testable design, become independent of external agents.
+Clean arch allow us to decouple our apps from frameworks, more testable design, become independent of external agents.
 The most common implementation of Clean architecture is Hexagonal architeture, which is used in this project.
 
-# Entities
+## Entities
 Encapsulates enterprises rules. Can be an object with rules or a set of structures or functions.
 
-# Use cases
+## Use cases
 Application specific business rules. Implements all systems use cases.
 
-# Interface adapters (Presenters)
+## Interface adapters (Presenters)
 Converts the data from the use cases to a convenient format for the GUI or client.
+
+## Adapters
+This layer encapsulates all the code necessary for the application to receive a communication from the exterior, like a http call for example.
 
