@@ -3,10 +3,15 @@
 This is a project made for the pismo team to analyze. The project accepts creating an account, transaction and reading.
 
 # How to run
+## For dev
+```shell
+docker-compose up -d
+```
+## For production
+First, edit docker-compose.yml on the api service change the dockerfile field to **Dockerfile**. Then you're all set.
 We are using docker multistage builds to generate a production smallersize image. To run locally you can use the command:
 ```shell
-docker build .
-TODO
+docker-compose up -d
 ```
 # Concepts
 ## Clean architecture

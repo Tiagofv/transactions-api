@@ -1,0 +1,13 @@
+FROM golang:1.18
+
+WORKDIR /go/src
+
+ENV PATH="/go/bin:${PATH}"
+
+ENV CGO_ENABLED=0
+
+COPY . .
+
+RUN go mod download
+
+CMD ["tail", "-f", "/dev/null"]
