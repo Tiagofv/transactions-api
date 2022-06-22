@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  api:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - .:/src/app
+    ports:
+      - "5000:8080"
+    networks:
+      - pismo
+    env_file:
+      - .env
+
+networks:
+  pismo:
+    external: true
