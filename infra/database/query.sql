@@ -1,19 +1,29 @@
--- name: GetAuthor :one
-SELECT * FROM authors
+-- name: GetTransaction :one
+SELECT * FROM transactions
 WHERE id = $1 LIMIT 1;
 
--- name: ListAuthors :many
-SELECT * FROM authors
-ORDER BY name;
+-- name: ListTransactions :many
+SELECT * FROM transactions
+ORDER BY id;
 
--- name: CreateAuthor :one
-INSERT INTO authors (
-    name, bio
+-- name: CreateTransaction :one
+INSERT INTO transactions (
+    account_id, operation_type_id, amount, event_date
 ) VALUES (
-             $1, $2
+             $1, $2, $3, $4
          )
     RETURNING *;
 
--- name: DeleteAuthor :exec
-DELETE FROM authors
-WHERE id = $1;
+-- name: CreateAccount :one
+INSERT INTO accounts (
+    document
+) VALUES (
+             $1
+         )
+    RETURNING *;
+
+-- name: GetAccount :one
+SELECT * FROM accounts WHERE id = $1 LIMIT 1;
+
+-- name: ListAccounts :one
+SELECT * FROM accounts;

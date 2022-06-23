@@ -16,6 +16,18 @@ services:
       - pismo
     env_file:
       - .env
+  db:
+    image: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_DB}
+    volumes:
+      - postgres:/data/postgres
 
+volumes:
+  postgres:
 networks:
   pismo:

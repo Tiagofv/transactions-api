@@ -1,12 +1,16 @@
 package http
 
-import "context"
+import (
+	"context"
+	"database/sql"
+	"tiagofv.com/transactions/core/domain/repositories"
+)
 
 type Server struct {
 	host                   string
-	database               string
+	database               *sql.DB
 	AccountsRepository     string
-	TransactionsRepository string
+	TransactionsRepository repositories.TransactionsInterface
 }
 
 func New(options ...func(server *Server)) *Server {
@@ -23,7 +27,7 @@ func WithHost(host string) func(server *Server) {
 	}
 }
 
-func WithDatabase(db string) func(server *Server) {
+func WithDatabase(db *sql.DB) func(server *Server) {
 	return func(server *Server) {
 		server.database = db
 	}
@@ -31,7 +35,7 @@ func WithDatabase(db string) func(server *Server) {
 
 func WithRepositories(ctx *context.Context) func(server *Server) {
 	return func(server *Server) {
-		server.TransactionsRepository = "oi"
+		server.TransactionsRepository = repositories.NewTransactionsRepository(server.database, ctx)
 		server.AccountsRepository = "oi"
 	}
 }

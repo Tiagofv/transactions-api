@@ -7,6 +7,9 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"tiagofv.com/transactions/core/adapters/controllers"
+	"tiagofv.com/transactions/core/domain/use_cases"
+	"tiagofv.com/transactions/infra/database"
 	"time"
 )
 
@@ -20,12 +23,13 @@ func Run() {
 	host := os.Getenv("HOST")
 
 	router := mux.NewRouter()
-
 	srv := New(
 		WithHost(host+":"+port),
-		WithDatabase("xd"),
+		WithDatabase(database.InitDB()),
 		WithRepositories(&ctx),
 	)
+	base := controllers.BaseController{CreateTransactionUseCase: use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository)}
+	router.HandleFunc("/transactions", base.CreateTransaction).Methods("POST")
 	//srv := &http.Server{
 	//	Addr:         host + ":" + port,
 	//	WriteTimeout: time.Second * 15,

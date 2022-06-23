@@ -1,7 +1,7 @@
 version: 1
 packages:
-  - path: "tutorial"
-    name: "tutorial"
+  - path: "queries"
+    name: "queries"
     engine: "postgresql"
     schema: "schema.sql"
     queries: "query.sql"
