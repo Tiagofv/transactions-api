@@ -13,6 +13,10 @@ We are using docker multistage builds to generate a production smallersize image
 ```shell
 docker-compose up -d
 ```
+## Swagger
+```shell
+swag init -g infra/http/server.go
+```
 # Concepts
 ## Clean architecture
 This project relies heavily on the concepts presented by uncle in his book "Clean Architecture: a craftsmen guide to software structure and design".

@@ -25,7 +25,12 @@ func NewTransactionsRepository(db *sql.DB, ctx *context.Context) *TransactionsRe
 
 func (t TransactionsRepository) CreateTransaction(transactionDto dto.TransactionDto) (queries.Transaction, error) {
 	db := queries.New(t.db)
-	inserted, err := db.CreateTransaction(*t.ctx, transactionDto.CreateTransactionParams)
+	inserted, err := db.CreateTransaction(*t.ctx, queries.CreateTransactionParams{
+		AccountID:       transactionDto.AccountID,
+		OperationTypeID: transactionDto.OperationTypeID,
+		Amount:          transactionDto.Amount,
+		EventDate:       transactionDto.EventDate,
+	})
 	if err != nil {
 		return queries.Transaction{}, err
 	}
