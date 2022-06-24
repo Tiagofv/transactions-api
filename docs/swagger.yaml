@@ -1,16 +1,80 @@
-basePath: /v2
-host: petstore.swagger.io
+basePath: /api
+definitions:
+  controllers.BaseError:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.TransactionDto:
+    properties:
+      accountID:
+        type: integer
+      amount:
+        type: number
+      eventDate:
+        type: string
+      operationTypeID:
+        type: integer
+    type: object
+  queries.Transaction:
+    properties:
+      accountID:
+        type: integer
+      amount:
+        type: number
+      eventDate:
+        type: string
+      id:
+        type: integer
+      operationTypeID:
+        type: integer
+    type: object
+host: localhost:8080
 info:
   contact:
-    email: tiagofvx@gmail.com
-    name: Tiago braga
+    email: support@swagger.io
+    name: API Support
     url: http://www.swagger.io/support
-  description: This is a sample transactions api.
+  description: This is the transactions API.
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   termsOfService: http://swagger.io/terms/
   title: Swagger Transactions API
   version: "1.0"
-paths: {}
+paths:
+  /transactions:
+    post:
+      consumes:
+      - application/json
+      description: Creates a transaction
+      parameters:
+      - description: The data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TransactionDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/queries.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+      summary: Creates a transaction
+      tags:
+      - transaction
 swagger: "2.0"

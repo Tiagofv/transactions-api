@@ -19,18 +19,18 @@ import (
 
 // @title Swagger Transactions API
 // @version 1.0
-// @description This is a sample transactions api.
+// @description This is the transactions API.
 // @termsOfService http://swagger.io/terms/
 
-// @contact.name Tiago braga
+// @contact.name API Support
 // @contact.url http://www.swagger.io/support
-// @contact.email tiagofvx@gmail.com
+// @contact.email support@swagger.io
 
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host petstore.swagger.io
-// @BasePath /v2
+// @host localhost:8080
+// @BasePath /api
 func Run() {
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	err := godotenv.Load()
@@ -48,8 +48,8 @@ func Run() {
 		WithRepositories(&ctx),
 	)
 	base := controllers.BaseController{CreateTransactionUseCase: use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository)}
-	router.HandleFunc("/swagger/*", httpSwagger.Handler(httpSwagger.URL("http://localhost:8080/swagger/swagger.json")))
-	router.HandleFunc("/transactions", base.CreateTransaction).Methods("GET")
+	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
+	router.HandleFunc("/api/transactions", base.CreateTransaction).Methods("POST")
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})

@@ -1,13 +1,13 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample transactions api.",
+        "description": "This is the transactions API.",
         "title": "Swagger Transactions API",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "Tiago braga",
+            "name": "API Support",
             "url": "http://www.swagger.io/support",
-            "email": "tiagofvx@gmail.com"
+            "email": "support@swagger.io"
         },
         "license": {
             "name": "Apache 2.0",
@@ -15,7 +15,107 @@
         },
         "version": "1.0"
     },
-    "host": "petstore.swagger.io",
-    "basePath": "/v2",
-    "paths": {}
+    "host": "localhost:8080",
+    "basePath": "/api",
+    "paths": {
+        "/transactions": {
+            "post": {
+                "description": "Creates a transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Creates a transaction",
+                "parameters": [
+                    {
+                        "description": "The data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TransactionDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/queries.Transaction"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.BaseError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TransactionDto": {
+            "type": "object",
+            "properties": {
+                "accountID": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "eventDate": {
+                    "type": "string"
+                },
+                "operationTypeID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "queries.Transaction": {
+            "type": "object",
+            "properties": {
+                "accountID": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "eventDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operationTypeID": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }

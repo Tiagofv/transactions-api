@@ -12,9 +12,9 @@ const docTemplate = `{
         "title": "{{.Title}}",
         "termsOfService": "http://swagger.io/terms/",
         "contact": {
-            "name": "Tiago braga",
+            "name": "API Support",
             "url": "http://www.swagger.io/support",
-            "email": "tiagofvx@gmail.com"
+            "email": "support@swagger.io"
         },
         "license": {
             "name": "Apache 2.0",
@@ -24,17 +24,117 @@ const docTemplate = `{
     },
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
-    "paths": {}
+    "paths": {
+        "/transactions": {
+            "post": {
+                "description": "Creates a transaction",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "transaction"
+                ],
+                "summary": "Creates a transaction",
+                "parameters": [
+                    {
+                        "description": "The data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.TransactionDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/queries.Transaction"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "controllers.BaseError": {
+            "type": "object",
+            "properties": {
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TransactionDto": {
+            "type": "object",
+            "properties": {
+                "accountID": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "eventDate": {
+                    "type": "string"
+                },
+                "operationTypeID": {
+                    "type": "integer"
+                }
+            }
+        },
+        "queries.Transaction": {
+            "type": "object",
+            "properties": {
+                "accountID": {
+                    "type": "integer"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "eventDate": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "operationTypeID": {
+                    "type": "integer"
+                }
+            }
+        }
+    }
 }`
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "petstore.swagger.io",
-	BasePath:         "/v2",
+	Host:             "localhost:8080",
+	BasePath:         "/api",
 	Schemes:          []string{},
 	Title:            "Swagger Transactions API",
-	Description:      "This is a sample transactions api.",
+	Description:      "This is the transactions API.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }
