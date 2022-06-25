@@ -9,9 +9,9 @@ services:
     environment:
       - COMMAND=http
     volumes:
-      - .:/src/app
+      - .:/go/src
     ports:
-      - "5000:8080"
+      - "8080:8080"
     networks:
       - pismo
     env_file:
@@ -23,9 +23,10 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_DB}
     volumes:
       - postgres:/data/postgres
+    networks:
+      - pismo
 
 volumes:
   postgres:

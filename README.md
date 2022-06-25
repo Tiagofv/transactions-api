@@ -7,12 +7,25 @@ This is a project made for the pismo team to analyze. The project accepts creati
 ```shell
 docker-compose up -d
 ```
-## For production
+## For productioncd 
 First, edit docker-compose.yml on the api service change the dockerfile field to **Dockerfile**. Then you're all set.
 We are using docker multistage builds to generate a production smallersize image. To run locally you can use the command:
 ```shell
 docker-compose up -d
 ```
+## Swagger
+```shell
+swag init -g infra/http/server.go
+```
+## Migrations
+Install goose
+```shell
+go install github.com/pressly/goose/v3/cmd/goose@latest
+goose postgres "user=postgres dbname=transactions_api password=postgres sslmode=disable" up
+```
+## SQLc
+SQLc is a codegen tool to handle database queries.
+
 # Concepts
 ## Clean architecture
 This project relies heavily on the concepts presented by uncle in his book "Clean Architecture: a craftsmen guide to software structure and design".

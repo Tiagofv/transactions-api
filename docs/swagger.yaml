@@ -1,0 +1,126 @@
+basePath: /api
+definitions:
+  controllers.BaseError:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.AccountDto:
+    properties:
+      document:
+        type: string
+    type: object
+  dto.TransactionDto:
+    properties:
+      account_id:
+        type: integer
+      amount:
+        type: number
+      event_date:
+        type: string
+      operation_type_id:
+        type: integer
+    type: object
+  queries.Account:
+    properties:
+      document:
+        type: string
+      id:
+        type: integer
+    type: object
+  queries.Transaction:
+    properties:
+      accountID:
+        type: integer
+      amount:
+        type: number
+      eventDate:
+        type: string
+      id:
+        type: integer
+      operationTypeID:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is the transactions API.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Transactions API
+  version: "1.0"
+paths:
+  /accounts:
+    post:
+      consumes:
+      - application/json
+      description: Creates an account
+      parameters:
+      - description: The data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AccountDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/queries.Account'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "422":
+          description: Unprocessable Entity
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+      summary: Creates an account
+      tags:
+      - accounts
+  /transactions:
+    post:
+      consumes:
+      - application/json
+      description: Creates a transaction
+      parameters:
+      - description: The data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/dto.TransactionDto'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/queries.Transaction'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+      summary: Creates a transaction
+      tags:
+      - transaction
+swagger: "2.0"
