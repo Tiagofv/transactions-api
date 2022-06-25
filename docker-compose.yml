@@ -23,7 +23,6 @@ services:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_DB: ${DATABASE_DB}
     volumes:
       - postgres:/data/postgres
     networks:

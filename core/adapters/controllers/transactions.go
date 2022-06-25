@@ -4,24 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 	"tiagofv.com/transactions/core/domain/dto"
-	"tiagofv.com/transactions/core/domain/use_cases"
+	"time"
 )
-
-type BaseController struct {
-	CreateTransactionUseCase *use_cases.CreateTransactionUseCase
-}
-
-type BaseError struct {
-	Message string
-}
-
-func (b BaseError) Error() string {
-	return b.Message
-}
-
-func NewBaseController(createTransactionUseCase *use_cases.CreateTransactionUseCase) *BaseController {
-	return &BaseController{CreateTransactionUseCase: createTransactionUseCase}
-}
 
 // CreateTransaction godoc
 // @Summary      Creates a transaction
@@ -37,13 +21,18 @@ func NewBaseController(createTransactionUseCase *use_cases.CreateTransactionUseC
 // @Router       /transactions [post]
 func (b BaseController) CreateTransaction(w http.ResponseWriter, r *http.Request) {
 	var data dto.TransactionDto
-	err := json.NewDecoder(r.Body).Decode(&data)
+	decoder := json.NewDecoder(r.Body)
+	err := decoder.Decode(&data)
+	data.EventDate = time.Now()
 	if err != nil {
-		_ = json.NewEncoder(w).Encode(BaseError{Message: err.Error()})
+		b.WriteError(w, err, http.StatusBadRequest)
 		return
 	}
 	response, err := b.CreateTransactionUseCase.Execute(data)
-
+	if err != nil {
+		b.WriteError(w, err, http.StatusInternalServerError)
+		return
+	}
 	err = json.NewEncoder(w).Encode(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

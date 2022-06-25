@@ -1,14 +1,18 @@
 package database
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	_ "github.com/lib/pq"
 	"log"
 	"os"
+	"time"
 )
 
 func InitDB() *sql.DB {
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
 	DSN := fmt.Sprintf("host=%s port=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
 		os.Getenv("DATABASE_HOST"),
@@ -21,8 +25,7 @@ func InitDB() *sql.DB {
 	if err != nil {
 		log.Fatalf("Error on database connection: %s", err.Error())
 	}
-	defer db.Close()
-	err = db.Ping()
+	err = db.PingContext(ctx)
 	if err != nil {
 		log.Fatalf("Error on database ping: %s", err.Error())
 	}

@@ -25,6 +25,58 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/accounts": {
+            "post": {
+                "description": "Creates an account",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Creates an account",
+                "parameters": [
+                    {
+                        "description": "The data",
+                        "name": "data",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.AccountDto"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/queries.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    }
+                }
+            }
+        },
         "/transactions": {
             "post": {
                 "description": "Creates a transaction",
@@ -87,19 +139,38 @@ const docTemplate = `{
                 }
             }
         },
+        "dto.AccountDto": {
+            "type": "object",
+            "properties": {
+                "document": {
+                    "type": "string"
+                }
+            }
+        },
         "dto.TransactionDto": {
             "type": "object",
             "properties": {
-                "accountID": {
+                "account_id": {
                     "type": "integer"
                 },
                 "amount": {
                     "type": "number"
                 },
-                "eventDate": {
+                "event_date": {
                     "type": "string"
                 },
-                "operationTypeID": {
+                "operation_type_id": {
+                    "type": "integer"
+                }
+            }
+        },
+        "queries.Account": {
+            "type": "object",
+            "properties": {
+                "document": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "integer"
                 }
             }

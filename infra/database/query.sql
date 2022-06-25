@@ -25,5 +25,8 @@ INSERT INTO accounts (
 -- name: GetAccount :one
 SELECT * FROM accounts WHERE id = $1 LIMIT 1;
 
+-- name: GetAccountByDocument :one
+SELECT * FROM accounts WHERE document = $1 LIMIT 1;
+
 -- name: ListAccounts :one
 SELECT * FROM accounts;

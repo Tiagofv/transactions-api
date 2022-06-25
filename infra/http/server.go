@@ -3,6 +3,7 @@ package http
 import (
 	"context"
 	"encoding/json"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	httpSwagger "github.com/swaggo/http-swagger"
@@ -32,7 +33,6 @@ import (
 // @host localhost:8080
 // @BasePath /api
 func Run() {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*10)
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatalf("Could not read environment variables: %s", err.Error())
@@ -41,27 +41,32 @@ func Run() {
 	host := os.Getenv("HOST")
 
 	router := mux.NewRouter()
+	backgroundCtx := context.Background()
 	srv := New(
 		WithHost(host),
 		WithPort(port),
 		WithDatabase(database.InitDB()),
-		WithRepositories(&ctx),
+		WithRepositories(&backgroundCtx),
 	)
-	base := controllers.BaseController{CreateTransactionUseCase: use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository)}
+	base := controllers.NewBaseController(
+		use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository),
+		use_cases.NewCreateAccountsUseCase(srv.AccountsRepository),
+	)
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	router.HandleFunc("/api/transactions", base.CreateTransaction).Methods("POST")
+	router.HandleFunc("/api/accounts", base.CreateAccount).Methods("POST")
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
-
-	configServer := srv.Start(router)
+	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
+	configServer := srv.Start(loggedRouter)
 	go func() {
 		if err = configServer.ListenAndServe(); err != nil {
 			log.Fatalf("Shutting down: %s", err.Error())
 		}
 	}()
-
+	ctx, cancel := context.WithTimeout(backgroundCtx, time.Second*10)
 	c := make(chan os.Signal, 1)
 	// intercept shutdown via SIGINT
 	signal.Notify(c, os.Interrupt)
