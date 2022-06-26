@@ -18,7 +18,7 @@ import (
 // @Accept       json
 // @Produce      json
 // @Param	data body dto.AccountDto true "The data"
-// @Success      200  {object}  queries.Account
+// @Success      200  {object}  presenters.AccountPresenter
 // @Failure      400  {object}  BaseError
 // @Failure      422  {object}  BaseError
 // @Failure      500  {object}  BaseError
@@ -64,7 +64,7 @@ func (b BaseController) CreateAccount(w http.ResponseWriter, r *http.Request) {
 // @Accept       json
 // @Produce      json
 // @Param	id path int true "The id"
-// @Success      200  {object}  queries.Account
+// @Success      200  {object}  presenters.AccountPresenter
 // @Failure      400  {object}  BaseError
 // @Failure      404  {object}  BaseError
 // @Failure      500  {object}  BaseError

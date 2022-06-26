@@ -2,7 +2,7 @@ package use_cases
 
 import (
 	"tiagofv.com/transactions/core/domain/repositories"
-	"tiagofv.com/transactions/infra/database/queries"
+	"tiagofv.com/transactions/core/presenters"
 )
 
 type GetAccountUseCase struct {
@@ -13,6 +13,10 @@ func NewGetAccountUseCase(accountsRepo repositories.AccountsInterface) *GetAccou
 	return &GetAccountUseCase{accountsRepo: accountsRepo}
 }
 
-func (g GetAccountUseCase) Execute(id int64) (queries.Account, error) {
-	return g.accountsRepo.FindAccount(id)
+func (g GetAccountUseCase) Execute(id int64) (presenters.AccountPresenter, error) {
+	account, err := g.accountsRepo.FindAccount(id)
+	return presenters.AccountPresenter{
+		ID:       account.ID,
+		Document: account.Document,
+	}, err
 }

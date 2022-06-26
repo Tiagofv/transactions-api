@@ -30,3 +30,6 @@ SELECT * FROM accounts WHERE document = $1 LIMIT 1;
 
 -- name: ListAccounts :one
 SELECT * FROM accounts;
+
+-- name: GetOperation :one
+SELECT * FROM operation_types WHERE id = $1 LIMIT 1;

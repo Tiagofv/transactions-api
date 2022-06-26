@@ -53,7 +53,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/queries.Account"
+                            "$ref": "#/definitions/presenters.AccountPresenter"
                         }
                     },
                     "400": {
@@ -103,7 +103,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/queries.Account"
+                            "$ref": "#/definitions/presenters.AccountPresenter"
                         }
                     },
                     "400": {
@@ -155,7 +155,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/queries.Transaction"
+                            "$ref": "#/definitions/presenters.TransactionPresenter"
                         }
                     },
                     "400": {
@@ -206,15 +206,12 @@ const docTemplate = `{
                 "amount": {
                     "type": "number"
                 },
-                "event_date": {
-                    "type": "string"
-                },
                 "operation_type_id": {
                     "type": "integer"
                 }
             }
         },
-        "queries.Account": {
+        "presenters.AccountPresenter": {
             "type": "object",
             "properties": {
                 "document": {
@@ -225,22 +222,19 @@ const docTemplate = `{
                 }
             }
         },
-        "queries.Transaction": {
+        "presenters.TransactionPresenter": {
             "type": "object",
             "properties": {
-                "accountID": {
+                "account_id": {
                     "type": "integer"
                 },
                 "amount": {
                     "type": "number"
                 },
-                "eventDate": {
+                "event_date": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "operationTypeID": {
+                "operation_type_id": {
                     "type": "integer"
                 }
             }

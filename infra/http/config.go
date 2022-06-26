@@ -14,6 +14,7 @@ type Server struct {
 	database               *sql.DB
 	AccountsRepository     repositories.AccountsInterface
 	TransactionsRepository repositories.TransactionsInterface
+	OperationsRepository   repositories.OperationsInterface
 }
 
 func New(options ...func(server *Server)) *Server {
@@ -55,5 +56,6 @@ func WithRepositories(ctx *context.Context) func(server *Server) {
 	return func(server *Server) {
 		server.TransactionsRepository = repositories.NewTransactionsRepository(server.database, ctx)
 		server.AccountsRepository = repositories.NewAccountsRepository(server.database, ctx)
+		server.OperationsRepository = repositories.NewOperationsRepository(server.database, ctx)
 	}
 }

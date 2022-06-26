@@ -82,6 +82,17 @@ func (q *Queries) GetAccountByDocument(ctx context.Context, document string) (Ac
 	return i, err
 }
 
+const getOperation = `-- name: GetOperation :one
+SELECT id, description, type FROM operation_types WHERE id = $1 LIMIT 1
+`
+
+func (q *Queries) GetOperation(ctx context.Context, id int64) (OperationType, error) {
+	row := q.db.QueryRowContext(ctx, getOperation, id)
+	var i OperationType
+	err := row.Scan(&i.ID, &i.Description, &i.Type)
+	return i, err
+}
+
 const getTransaction = `-- name: GetTransaction :one
 SELECT id, account_id, operation_type_id, amount, event_date FROM transactions
 WHERE id = $1 LIMIT 1

@@ -3,14 +3,15 @@
 CREATE TABLE accounts
 (
     id       BIGSERIAL PRIMARY KEY,
-    document VARCHAR (11) NOT NULL,
+    document VARCHAR(11) NOT NULL,
     UNIQUE (document)
 );
 
 CREATE TABLE operation_types
 (
     id          BIGSERIAL PRIMARY KEY,
-    description VARCHAR(255) NOT NULL
+    description VARCHAR NOT NULL,
+    type        VARCHAR DEFAULT 'NEGATIVE'
 );
 
 CREATE TABLE transactions
@@ -19,13 +20,17 @@ CREATE TABLE transactions
     account_id        BIGSERIAL REFERENCES accounts (id)        NOT NULL,
     operation_type_id BIGSERIAL REFERENCES operation_types (id) NOT NULL,
     amount            FLOAT(4)                                  NOT NULL,
-    event_date        DATE                                      NOT NULL DEFAULT CURRENT_DATE
+    event_date        TIMESTAMP                                 NOT NULL DEFAULT CURRENT_DATE
 );
 
-INSERT INTO operation_types (description) VALUES ('COMPRA A VISTA');
-INSERT INTO operation_types (description) VALUES ('COMPRA PARCELADA');
-INSERT INTO operation_types (description) VALUES ('SAQUE');
-INSERT INTO operation_types (description) VALUES ('PAGAMENTO');
+INSERT INTO operation_types (description)
+VALUES ('COMPRA A VISTA');
+INSERT INTO operation_types (description)
+VALUES ('COMPRA PARCELADA');
+INSERT INTO operation_types (description)
+VALUES ('SAQUE');
+INSERT INTO operation_types (description, type)
+VALUES ('PAGAMENTO', 'POSITIVE');
 -- +goose StatementEnd
 
 -- +goose Down

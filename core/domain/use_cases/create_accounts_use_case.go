@@ -5,7 +5,7 @@ import (
 	"errors"
 	"tiagofv.com/transactions/core/domain/dto"
 	"tiagofv.com/transactions/core/domain/repositories"
-	"tiagofv.com/transactions/infra/database/queries"
+	"tiagofv.com/transactions/core/presenters"
 )
 
 type CreateAccountsUseCase struct {
@@ -20,10 +20,14 @@ func NewCreateAccountsUseCase(accountsRepo repositories.AccountsInterface) *Crea
 	}
 }
 
-func (c CreateAccountsUseCase) Execute(dto dto.AccountDto) (queries.Account, error) {
+func (c CreateAccountsUseCase) Execute(dto dto.AccountDto) (presenters.AccountPresenter, error) {
 	account, err := c.accountsRepo.FindAccountByDocument(dto.Document)
 	if (!errors.Is(err, sql.ErrNoRows) && err != nil) || account.Document != "" {
-		return account, ErrAccountExists
+		return presenters.AccountPresenter{}, ErrAccountExists
 	}
-	return c.accountsRepo.CreateAccount(dto)
+	createAccount, err := c.accountsRepo.CreateAccount(dto)
+	return presenters.AccountPresenter{
+		ID:       createAccount.ID,
+		Document: createAccount.Document,
+	}, err
 }

@@ -49,7 +49,11 @@ func Run() {
 		WithRepositories(&backgroundCtx),
 	)
 	base := controllers.NewBaseController(
-		use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository),
+		use_cases.NewCreateTransactionUseCase(
+			srv.TransactionsRepository,
+			srv.OperationsRepository,
+			srv.AccountsRepository,
+		),
 		use_cases.NewCreateAccountsUseCase(srv.AccountsRepository),
 		use_cases.NewGetAccountUseCase(srv.AccountsRepository),
 	)
