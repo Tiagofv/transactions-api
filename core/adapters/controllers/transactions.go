@@ -38,3 +38,7 @@ func (b BaseController) CreateTransaction(w http.ResponseWriter, r *http.Request
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
+func (b BaseController) GetTransaction(w http.ResponseWriter, r *http.Request) {
+
+}

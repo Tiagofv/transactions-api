@@ -77,6 +77,56 @@ const docTemplate = `{
                 }
             }
         },
+        "/accounts/{id}": {
+            "get": {
+                "description": "Get account by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Get account by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/queries.Account"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    }
+                }
+            }
+        },
         "/transactions": {
             "post": {
                 "description": "Creates a transaction",
