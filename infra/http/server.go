@@ -6,6 +6,7 @@ import (
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
@@ -64,6 +65,7 @@ func Run() {
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
+	router.Handle("/api/metrics", promhttp.Handler())
 	loggedRouter := handlers.LoggingHandler(os.Stdout, router)
 	configServer := srv.Start(loggedRouter)
 	go func() {

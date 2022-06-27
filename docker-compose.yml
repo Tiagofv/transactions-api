@@ -22,13 +22,44 @@ services:
     ports:
       - "5432:5432"
     environment:
+      POSTGRES_DB: ${DATABASE_DB}
       POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
     volumes:
       - postgres:/data/postgres
     networks:
       - pismo
 
+  prometheus:
+    image: prom/prometheus
+    restart: unless-stopped
+    volumes:
+      - ./infra/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    networks:
+      - pismo
+    ports:
+      - 9090:9090
+  grafana:
+    image: grafana/grafana
+    restart: unless-stopped
+    environment:
+      GF_INSTALL_PLUGINS: 'grafana-clock-panel,grafana-simple-json-datasource'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    networks:
+      - pismo
 volumes:
   postgres:
+  prometheus_data:
+  grafana_data:
 networks:
   pismo:

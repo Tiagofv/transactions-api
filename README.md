@@ -1,4 +1,4 @@
-# Transactions
+# Transactions (API + Postgresql + Prometheus + Grafana)
 
 This is a project made for the pismo team to analyze. The project accepts creating an account, transaction and reading account infos.
 
@@ -24,7 +24,9 @@ swag init -g infra/http/server.go
 ## Migrations
 Install goose
 ```shell
+make sh
 go install github.com/pressly/goose/v3/cmd/goose@latest
+cd infra/database/migrations
 goose postgres "host=db user=postgres dbname=transactions_api password=postgres sslmode=disable" up
 ```
 ## SQLc
@@ -57,3 +59,6 @@ To run all tests:
 ```shell
 make run test
 ```
+## Logging
+All API related metrics are sent to Prometheus. These metrics can be seen at http://localhost:3000 (Grafana dashboard)
+
