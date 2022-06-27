@@ -57,7 +57,7 @@ Encapsulates all interactions with the database.
 ## Tests
 To run all tests:
 ```shell
-make run test
+make test
 ```
 ## Logging
 All API related metrics are sent to Prometheus. These metrics can be seen at http://localhost:3000 (Grafana dashboard)
