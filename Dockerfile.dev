@@ -9,7 +9,6 @@ ENV PATH="/go/bin:${PATH}"
 ENV CGO_ENABLED=0
 RUN go install github.com/swaggo/swag/cmd/swag@latest
 RUN go install github.com/pressly/goose/v3/cmd/goose@latest
-RUN go install github.com/kyleconroy/sqlc/cmd/sqlc@latest
 COPY . .
 
 RUN go mod download && go mod tidy

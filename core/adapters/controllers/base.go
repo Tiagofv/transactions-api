@@ -9,10 +9,11 @@ import (
 type BaseController struct {
 	CreateTransactionUseCase *use_cases.CreateTransactionUseCase
 	CreateAccountUseCase     *use_cases.CreateAccountsUseCase
+	GetAccountUseCase        *use_cases.GetAccountUseCase
 }
 
-func NewBaseController(createTransactionUseCase *use_cases.CreateTransactionUseCase, createAccountUseCase *use_cases.CreateAccountsUseCase) *BaseController {
-	return &BaseController{CreateTransactionUseCase: createTransactionUseCase, CreateAccountUseCase: createAccountUseCase}
+func NewBaseController(createTransactionUseCase *use_cases.CreateTransactionUseCase, createAccountUseCase *use_cases.CreateAccountsUseCase, getAccountUseCase *use_cases.GetAccountUseCase) *BaseController {
+	return &BaseController{CreateTransactionUseCase: createTransactionUseCase, CreateAccountUseCase: createAccountUseCase, GetAccountUseCase: getAccountUseCase}
 }
 
 type BaseError struct {

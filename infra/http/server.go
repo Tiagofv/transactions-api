@@ -49,14 +49,19 @@ func Run() {
 		WithRepositories(&backgroundCtx),
 	)
 	base := controllers.NewBaseController(
-		use_cases.NewCreateTransactionUseCase(srv.TransactionsRepository),
+		use_cases.NewCreateTransactionUseCase(
+			srv.TransactionsRepository,
+			srv.OperationsRepository,
+			srv.AccountsRepository,
+		),
 		use_cases.NewCreateAccountsUseCase(srv.AccountsRepository),
+		use_cases.NewGetAccountUseCase(srv.AccountsRepository),
 	)
 	router.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 	router.HandleFunc("/api/transactions", base.CreateTransaction).Methods("POST")
 	router.HandleFunc("/api/accounts", base.CreateAccount).Methods("POST")
+	router.HandleFunc("/api/accounts/{id:[0-9]+}", base.GetAccount).Methods("GET")
 	router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
-		// an example API handler
 		json.NewEncoder(w).Encode(map[string]bool{"ok": true})
 	})
 	loggedRouter := handlers.LoggingHandler(os.Stdout, router)

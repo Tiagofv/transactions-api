@@ -16,29 +16,25 @@ definitions:
         type: integer
       amount:
         type: number
-      event_date:
-        type: string
       operation_type_id:
         type: integer
     type: object
-  queries.Account:
+  presenters.AccountPresenter:
     properties:
       document:
         type: string
       id:
         type: integer
     type: object
-  queries.Transaction:
+  presenters.TransactionPresenter:
     properties:
-      accountID:
+      account_id:
         type: integer
       amount:
         type: number
-      eventDate:
+      event_date:
         type: string
-      id:
-        type: integer
-      operationTypeID:
+      operation_type_id:
         type: integer
     type: object
 host: localhost:8080
@@ -73,7 +69,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/queries.Account'
+            $ref: '#/definitions/presenters.AccountPresenter'
         "400":
           description: Bad Request
           schema:
@@ -87,6 +83,39 @@ paths:
           schema:
             $ref: '#/definitions/controllers.BaseError'
       summary: Creates an account
+      tags:
+      - accounts
+  /accounts/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get account by id
+      parameters:
+      - description: The id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/presenters.AccountPresenter'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/controllers.BaseError'
+      summary: Get account by id
       tags:
       - accounts
   /transactions:
@@ -107,7 +136,7 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/queries.Transaction'
+            $ref: '#/definitions/presenters.TransactionPresenter'
         "400":
           description: Bad Request
           schema:

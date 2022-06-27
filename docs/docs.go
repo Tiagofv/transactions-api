@@ -53,7 +53,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/queries.Account"
+                            "$ref": "#/definitions/presenters.AccountPresenter"
                         }
                     },
                     "400": {
@@ -64,6 +64,56 @@ const docTemplate = `{
                     },
                     "422": {
                         "description": "Unprocessable Entity",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    }
+                }
+            }
+        },
+        "/accounts/{id}": {
+            "get": {
+                "description": "Get account by id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "accounts"
+                ],
+                "summary": "Get account by id",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "The id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/presenters.AccountPresenter"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/controllers.BaseError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
                         "schema": {
                             "$ref": "#/definitions/controllers.BaseError"
                         }
@@ -105,7 +155,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/queries.Transaction"
+                            "$ref": "#/definitions/presenters.TransactionPresenter"
                         }
                     },
                     "400": {
@@ -156,15 +206,12 @@ const docTemplate = `{
                 "amount": {
                     "type": "number"
                 },
-                "event_date": {
-                    "type": "string"
-                },
                 "operation_type_id": {
                     "type": "integer"
                 }
             }
         },
-        "queries.Account": {
+        "presenters.AccountPresenter": {
             "type": "object",
             "properties": {
                 "document": {
@@ -175,22 +222,19 @@ const docTemplate = `{
                 }
             }
         },
-        "queries.Transaction": {
+        "presenters.TransactionPresenter": {
             "type": "object",
             "properties": {
-                "accountID": {
+                "account_id": {
                     "type": "integer"
                 },
                 "amount": {
                     "type": "number"
                 },
-                "eventDate": {
+                "event_date": {
                     "type": "string"
                 },
-                "id": {
-                    "type": "integer"
-                },
-                "operationTypeID": {
+                "operation_type_id": {
                     "type": "integer"
                 }
             }

@@ -16,6 +16,7 @@ type Account struct {
 type OperationType struct {
 	ID          int64
 	Description string
+	Type        string
 }
 
 type Transaction struct {

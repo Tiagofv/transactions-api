@@ -11,6 +11,7 @@ require (
 	github.com/lib/pq v1.10.6
 	github.com/mailru/easyjson v0.7.7 // indirect
 	github.com/spf13/cobra v1.5.0
+	github.com/stretchr/testify v1.7.5 // indirect
 	github.com/swaggo/http-swagger v1.3.0
 	github.com/swaggo/swag v1.8.3
 	golang.org/x/net v0.0.0-20220622184535-263ec571b305 // indirect

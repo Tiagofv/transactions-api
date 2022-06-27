@@ -6,3 +6,6 @@ run api:
 
 swagger:
 	docker-compose exec api swag init -g infra/http/server.go
+
+run test:
+	docker-compose exec api go test ./...
